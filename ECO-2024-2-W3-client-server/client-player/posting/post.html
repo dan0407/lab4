@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Carta</title>
+    <title>Crear Post</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,7 +22,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            max-width: 400px;
+            max-width: 500px;
             width: 100%;
         }
         .formulario input, .formulario textarea {
@@ -40,25 +40,29 @@
             border-radius: 4px;
             font-size: 16px;
         }
-        .carta {
+        .posts-container {
+            margin-top: 20px;
+            max-width: 500px;
+            width: 100%;
+        }
+        .post {
             border: 1px solid #ddd;
             padding: 16px;
-            max-width: 400px;
+            margin-bottom: 10px;
             background: #fff;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: none;
         }
-        .carta img {
+        .post img {
             max-width: 100%;
             height: auto;
             border-radius: 8px;
         }
-        .carta h1 {
+        .post h1 {
             font-size: 24px;
             margin: 16px 0;
         }
-        .carta p {
+        .post p {
             font-size: 16px;
             color: #666;
         }
@@ -78,16 +82,16 @@
 </head>
 <body>
     <div class="formulario">
-        <h2>Crear Carta</h2>
-        <form id="formularioCarta">
+        <h2>Crear Post</h2>
+        <form id="formularioPost">
             <input type="file" id="imagenArchivo" accept="image/*" required>
             <input type="text" id="titulo" placeholder="Título" required>
             <textarea id="descripcion" rows="4" placeholder="Descripción" required></textarea>
-            <button type="submit">Crear Carta</button>
+            <button type="submit">Crear Post</button>
         </form>
     </div>
-    <div class="carta" id="carta">
-        <!-- Aquí se llenará la carta con JavaScript -->
+    <div class="posts-container" id="posts-container">
+        <!-- Aquí se llenarán los posts con JavaScript -->
     </div>
     <a href="http://127.0.0.1:3000/" class="boton-regresar">Volver</a>
     <script src="./post.js"></script>

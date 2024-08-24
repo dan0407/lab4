@@ -1,20 +1,19 @@
 document.getElementById('fetch-button').addEventListener('click', fetchData);
+	async function fetchData() {
+		renderLoadingState();
+		try {
+			const postsString = localStorage.getItem('posts');
+			console.log('Contenido raw de localStorage:', postsString);
 
-async function fetchData() {
-	renderLoadingState();
-	try {
-		const response = await fetch('http://localhost:5050/users');
-		if (!response.ok) {
-			throw new Error('Network response was not ok');
+			const posts = postsString ? JSON.parse(postsString) : [];
+			console.log('Posts parseados:', posts);
+
+			renderData({ players: posts });
+		} catch (error) {
+			console.error('Error al obtener posts:', error);
+			renderErrorState();
 		}
-		const data = await response.json();
-		renderData(data);
-	} catch (error) {
-		console.error(error);
-		renderErrorState();
 	}
-}
-
 function renderErrorState() {
 	const container = document.getElementById('data-container');
 	container.innerHTML = ''; // Clear previous data
@@ -30,16 +29,24 @@ function renderLoadingState() {
 }
 
 function renderData(data) {
+	console.log('Rendering data:', data);
 	const container = document.getElementById('data-container');
 	container.innerHTML = ''; // Clear previous data
 
-	if (data.players.length > 0) {
+	if (data.players && data.players.length > 0) {
 		data.players.forEach((item) => {
+			console.log('Rendering item:', item);
 			const div = document.createElement('div');
 			div.className = 'item';
-			div.innerHTML = item.name;
-			div.innerHTML = `<img src="${item.profilePicture}" /><p>${item.name}</p>`;
+			div.innerHTML = `
+				<img src="${item.imagenData}" alt="Post image" />
+				<h2>${item.titulo}</h2>
+				<p>${item.descripcion}</p>
+			`;
 			container.appendChild(div);
 		});
+	} else {
+		console.log('No posts found');
+		container.innerHTML = '<p>No posts found</p>';
 	}
 }

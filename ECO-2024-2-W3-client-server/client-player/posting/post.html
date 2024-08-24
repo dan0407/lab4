@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Carta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .formulario {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .formulario input, .formulario textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .formulario button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .carta {
+            border: 1px solid #ddd;
+            padding: 16px;
+            max-width: 400px;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .carta img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .carta h1 {
+            font-size: 24px;
+            margin: 16px 0;
+        }
+        .carta p {
+            font-size: 16px;
+            color: #666;
+        }
+        .boton-regresar {
+            display: block;
+            margin: 16px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="formulario">
+        <h2>Crear Carta</h2>
+        <form id="formularioCarta">
+            <input type="file" id="imagenArchivo" accept="image/*" required>
+            <input type="text" id="titulo" placeholder="Título" required>
+            <textarea id="descripcion" rows="4" placeholder="Descripción" required></textarea>
+            <button type="submit">Crear Carta</button>
+        </form>
+    </div>
+    <div class="carta" id="carta">
+        <!-- Aquí se llenará la carta con JavaScript -->
+    </div>
+    <a href="http://127.0.0.1:3000/" class="boton-regresar">Volver</a>
+    <script src="./post.js"></script>
+</body>
+</html>

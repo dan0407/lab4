@@ -1,33 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RESULTS</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
-      #data-container {
-        margin-top: 20px;
-      }
-      .item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-      img {
-        width: 30px;
-        height: 30px;
-        border-radius: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>RESULTS</h1>
-    <button id="fetch-button">Fetch</button>
-    <div id="data-container"></div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios y Posts desde LocalStorage</title>
+  <style>
+    .post-item {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Usuarios</h1>
+  <div id="usuarios"></div>
 
-    <script src="index.js"></script>
-  </body>
+  <h1>Posts</h1>
+  <div id="posts"></div>
+
+  <script>
+    // Guardar datos de prueba en localStorage si están vacíos
+    function initializeLocalStorage() {
+      const defaultUsers = [
+        { username: 'will', password: 'will', profilePicture: 'https://avatar.iran.liara.run/public/13' }
+      ];
+      const defaultPosts = [
+        { imagenData: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...' }
+      ];
+
+      if (!localStorage.getItem('users')) {
+        localStorage.setItem('users', JSON.stringify(defaultUsers));
+      }
+
+      if (!localStorage.getItem('posts')) {
+        localStorage.setItem('posts', JSON.stringify(defaultPosts));
+      }
+    }
+
+    // Inicializar datos en localStorage
+    initializeLocalStorage();
+
+    // Función para obtener datos desde el localStorage
+    function getFromLocalStorage(key) {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : [];
+    }
+
+    // Función para renderizar usuarios
+    function renderUsers() {
+      const users = getFromLocalStorage('users');
+      const userContainer = document.getElementById('usuarios');
+      userContainer.innerHTML = ''; // Limpiar contenido previo
+
+      if (users.length === 0) {
+        userContainer.innerHTML = '<p>No users registered.</p>';
+        return;
+      }
+
+      users.forEach((user) => {
+        const userElement = document.createElement('div');
+        userElement.innerHTML = `
+          <p>Username: ${user.username}</p>
+          <p><img src="${user.profilePicture}" alt="Profile picture of ${user.username}" style="max-width: 100px; max-height: 100px;" /></p>
+        `;
+        userContainer.appendChild(userElement);
+      });
+    }
+
+    // Función para renderizar posts
+    function renderPosts() {
+      const posts = getFromLocalStorage('posts');
+      const postContainer = document.getElementById('posts');
+      postContainer.innerHTML = ''; // Limpiar contenido previo
+
+      if (posts.length === 0) {
+        postContainer.innerHTML = '<p>No posts available.</p>';
+        return;
+      }
+
+      posts.forEach((post) => {
+        const postElement = document.createElement('div');
+        postElement.className = 'post-item';
+        let imageContent = '';
+        if (post.imagenData) {
+          imageContent = `<img src="${post.imagenData}" alt="Post image" style="max-width: 200px; max-height: 200px;" />`;
+        }
+        postElement.innerHTML = `
+          ${imageContent}
+        `;
+        postContainer.appendChild(postElement);
+      });
+    }
+
+    // Renderizar usuarios y posts al cargar la página
+    renderUsers();
+    renderPosts();
+  </script>
+</body>
 </html>

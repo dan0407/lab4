@@ -1,52 +1,78 @@
-document.getElementById('fetch-button').addEventListener('click', fetchData);
-	async function fetchData() {
-		renderLoadingState();
-		try {
-			const postsString = localStorage.getItem('posts');
-			console.log('Contenido raw de localStorage:', postsString);
-
-			const posts = postsString ? JSON.parse(postsString) : [];
-			console.log('Posts parseados:', posts);
-
-			renderData({ players: posts });
-		} catch (error) {
-			console.error('Error al obtener posts:', error);
-			renderErrorState();
-		}
-	}
-function renderErrorState() {
-	const container = document.getElementById('data-container');
-	container.innerHTML = ''; // Clear previous data
-	container.innerHTML = '<p>Failed to load data</p>';
-	console.log('Failed to load data');
+async function fetchUsers() {
+  try {
+    const response = await fetch('http://localhost:5050/users');
+    if (!response.ok) {
+      throw new Error('Failed to fetch users');
+    }
+    const users = await response.json();
+    renderUsers(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+  }
 }
 
-function renderLoadingState() {
-	const container = document.getElementById('data-container');
-	container.innerHTML = ''; // Clear previous data
-	container.innerHTML = '<p>Loading...</p>';
-	console.log('Loading...');
+async function fetchPosts() {
+  try {
+    const response = await fetch('http://localhost:5050/posts');
+    if (!response.ok) {
+      throw new Error('Failed to fetch posts');
+    }
+    const posts = await response.json();
+    renderPosts(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+  }
 }
 
-function renderData(data) {
-	console.log('Rendering data:', data);
-	const container = document.getElementById('data-container');
-	container.innerHTML = ''; // Clear previous data
-
-	if (data.players && data.players.length > 0) {
-		data.players.forEach((item) => {
-			console.log('Rendering item:', item);
-			const div = document.createElement('div');
-			div.className = 'item';
-			div.innerHTML = `
-				<img src="${item.imagenData}" alt="Post image" />
-				<h2>${item.titulo}</h2>
-				<p>${item.descripcion}</p>
-			`;
-			container.appendChild(div);
-		});
-	} else {
-		console.log('No posts found');
-		container.innerHTML = '<p>No posts found</p>';
-	}
+function renderUsers(users) {
+  const userContainer = document.getElementById('usuarios');
+  if (!userContainer) {
+    console.error('Element with id "usuarios" not found');
+    return;
+  }
+  userContainer.innerHTML = ''; // Limpiar contenido previo
+  if (users.length === 0) {
+    userContainer.innerHTML = '<p>No users registered.</p>';
+    return;
+  }
+  users.forEach((user) => {
+    const userElement = document.createElement('div');
+    userElement.innerHTML = `
+      <p>Username: ${user.username}</p>
+      <p>Name: ${user.name}</p>
+    `;
+    userContainer.appendChild(userElement);
+  });
 }
+
+function renderPosts(posts) {
+  const postContainer = document.getElementById('posts');
+  if (!postContainer) {
+    console.error('Element with id "posts" not found');
+    return;
+  }
+  postContainer.innerHTML = ''; // Limpiar contenido previo
+  if (posts.length === 0) {
+    postContainer.innerHTML = '<p>No posts available.</p>';
+    return;
+  }
+  posts.forEach((post) => {
+    const postElement = document.createElement('div');
+    postElement.className = 'post-item';
+    let imageContent = '';
+    if (post.imageURL) {
+      imageContent = `<img src="${post.imageURL}" alt="Post image" style="max-width: 200px; max-height: 200px;" />`;
+    }
+    postElement.innerHTML = `
+      <p>${post.name} | @${post.username}</p>
+      <h2>${post.title}</h2>
+      <p>${post.description}</p>
+      ${imageContent}
+    `;
+    postContainer.appendChild(postElement);
+  });
+}
+
+// Llamadas a las funciones para obtener y renderizar los usuarios y posts
+fetchUsers();
+fetchPosts();
